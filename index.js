@@ -33,11 +33,18 @@ async function run(){
             const task = await cursor.toArray();
             res.send(task);
         });
-        //created completed task api
+        //created completed task post api
         app.post('/completed', async(req, res) =>{
             const completed = req.body;
             const result = await completedTasksCollection.insertOne(completed);
             res.send(result);
+        });
+        //created completed task get api
+        app.get('/completed', async (req, res) => {
+            const query = {};
+            const cursor = completedTasksCollection.find(query);
+            const task = await cursor.toArray();
+            res.send(task);
         });
 
     }
