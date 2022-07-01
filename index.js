@@ -46,6 +46,26 @@ async function run(){
             const task = await cursor.toArray();
             res.send(task);
         });
+        
+        app.get('/task/:id' , async (req, res) =>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const tasks = await dailyTaskCollection.findOne(query);
+            res.send(tasks);
+        });
+
+        app.put('/task/:id', async(req, res) =>{
+            const id = req.params.id;
+            const updateTask = req.body;
+            const filter = {_id: ObjectId(id)};
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: {task: updateTask.task}
+            };
+            const result = await dailyTaskCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        });
+        
 
     }
     finally{
@@ -64,3 +84,4 @@ app.get('/', (req, res) =>{
 app.listen(port, () => {
     console.log('listening to port', port);
 })
+
