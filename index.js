@@ -19,10 +19,24 @@ async function run(){
     try{
         await client.connect();
         const dailyTaskCollection = client.db('dailyTask').collection('task');
+        const completedTasksCollection = client.db('dailyTask').collection('completed');
 
         app.post('/task', async(req, res) =>{
             const newTask = req.body;
             const result = await dailyTaskCollection.insertOne(newTask);
+            res.send(result);
+        });
+
+        app.get('/task', async (req, res) => {
+            const query = {};
+            const cursor = dailyTaskCollection.find(query);
+            const task = await cursor.toArray();
+            res.send(task);
+        });
+
+        app.post('/completed', async(req, res) =>{
+            const completed = req.body;
+            const result = await completedTasksCollection.insertOne(completed);
             res.send(result);
         });
 
