@@ -56,11 +56,11 @@ async function run(){
 
         app.put('/task/:id', async(req, res) =>{
             const id = req.params.id;
-            const updateTask = req.body;
+            const tasks = req.body;
             const filter = {_id: ObjectId(id)};
             const options = { upsert: true };
             const updatedDoc = {
-                $set: {task: updateTask.task}
+                $set: {task : tasks.task}
             };
             const result = await dailyTaskCollection.updateOne(filter, updatedDoc, options);
             res.send(result);
