@@ -33,7 +33,7 @@ async function run(){
             const task = await cursor.toArray();
             res.send(task);
         });
-
+        //created completed task api
         app.post('/completed', async(req, res) =>{
             const completed = req.body;
             const result = await completedTasksCollection.insertOne(completed);
